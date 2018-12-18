@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>     <html class="ie6" LANG="en">     <![endif]-->
+<!--[if    IE 7]>     <html class="ie7" LANG="en">     <![endif]-->
+<!--[if    IE 8]>     <html class="ie8" LANG="en">     <![endif]-->
+<!--[if    IE 9]>     <html class="ie9" LANG="en">     <![endif]-->
+<!--[if gt IE 8]><!--><html             LANG="en"><!--><![endif]-->
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+  <title>Realm Initial Configuration</title>
+
+  <style>
+    pre {
+      white-space: normal;
+    }
+
+    div {
+      font-weight: bold;
+    }
+
+    div span {
+      font-weight: normal;
+    }
+    
+    div.validation-0 span {
+      color: red;
+      font-weight: bold;
+    }
+
+    div.validation-1 span {
+      color: darkgreen;
+      font-weight: bold;
+    }
+    
+    div.validation-2 span {
+      color: orange;
+      font-weight: bold;
+    }
+
+  </style>
+
+  <script type="text/javascript">
+
+    function showDependencies(text) {
+      // Fill information of dependencies
+      var lines = text.split("\n");
+      for (var i = 0; i < lines.length; i++) {
+        var line = lines[i].split(":");
+        var element_id          = line[0];
+        var element_validation  = line[1];
+        var element_description = line[2];
+
+        var element = document.getElementById('dependecy_' + element_id);
+        if (element != undefined) {
+          element.className = 'validation-' + element_validation + '';
+          
+          var subElement = element.getElementsByTagName('span');
+          if (subElement.length > 0) {
+            subElement[0].innerHTML = element_description;
+          }
+        }
+      }
+
+      // Change status of non checked dependencies
+      var elements = document.getElementsByTagName('div');
+      for (var i = 0; i < elements.length; i++) {
+        if (elements[i].id.startsWith('dependecy_') && elements[i].className == '') {
+          var subElement = elements[i].getElementsByTagName('span');
+          if (subElement.length > 0) {
+            subElement[0].innerHTML = "Not configured";
+          }
+        }
+      }
+    }
+
+    // Request dependencies information after load the page
+    document.addEventListener('DOMContentLoaded', function() {
+      var request = new XMLHttpRequest();
+      request.onreadystatechange = function() {
+        // readyState == 4 : DONE
+        if (this.readyState == 4) {
+          // status == 200 : OK
+          if (this.status == 200) {
+            console.log("Dependencies:\n" + this.responseText);
+          }
+          showDependencies(this.responseText);
+        }
+      };
+
+      request.open('POST', 'configure.php', true);
+      request.send();
+    });
+
+  </script>
+
+</head>
+
+<body>
+<pre>
+
+  <h1>
+    Realm Initial Configuration
+  </h1>
+
+  <h3>
+    Checking dependencies
+    <hr />
+  </h3>
+
+  <div id="dependecy_http_server">
+    HTTP Server ................................: <span>checking</span>
+  </div>
+
+  <br />
+
+  <div id="dependecy_http_server_rewrite">
+    HTTP Server allow rewrite ..................: <span>checking</span>
+  </div>
+
+  <br />
+
+  <div id="dependecy_php_version">
+    PHP Version ................................: <span>checking</span>
+  </div>
+
+  <br />
+
+  <div id="dependecy_write_on_settings">
+    Permission to write on ./settings folder ...: <span>checking</span>
+  </div>
+
+  <br />
+
+</pre>
+</body>
+
+</html>
