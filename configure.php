@@ -11,7 +11,7 @@ if (strpos($http_server_text, 'Apache') !== false) {
 
 
 # Check if apache rewrite module is enabled
-$http_server_rewrite_text = "No. Rewrite module must be enabled '# a2dismod rewrite'.";
+$http_server_rewrite_text = "No. Rewrite module must be enabled '# a2enmod rewrite'.";
 $http_server_rewrite_valid = 0;
 
 # If http server is not Apache, does not need to check
