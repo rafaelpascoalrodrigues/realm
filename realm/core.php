@@ -24,7 +24,7 @@ class Core {
 
         $this->realm = empty($realm) ? 'realm' : $realm;
 
-        
+
         $this->registry['domain']    = !empty($_GET['domain'])    ? $_GET['domain']    : '' ;
         $this->registry['subdomain'] = !empty($_GET['subdomain']) ? $_GET['subdomain'] : '' ;
         $this->registry['request']   = !empty($_GET['request'])   ? $_GET['request']   : '' ;
@@ -32,8 +32,47 @@ class Core {
   
         $this->registry['query'] = empty($_GET) ? array() : $_GET;
 
+        $this->registry['uri'] = self::GetUri();
 
         return true;
+    }
+
+    private function GetUri() {
+        $router = array();
+
+        if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+            $router['ssl'] = true; 
+        } else {
+            $router['ssl'] = false;
+        }
+
+        $router['protocol'] = substr(strtolower($_SERVER['SERVER_PROTOCOL']), 0, strpos($_SERVER['SERVER_PROTOCOL'], '/'));  
+        $router['protocol'] .= ($router['ssl']) ? 's' : '';
+
+        if (isset($_SERVER['HTTP_X_FORWARDED'])) {
+            $router['host'] = $_SERVER['HTTP_X_FORWARDED_HOST'];
+        } elseif (isset($_SERVER['HTTP_HOST'])) {
+            $router['host'] = $_SERVER['HTTP_HOST'];
+        } else {
+            $router['host'] = $_SERVER['SERVER_NAME'];
+        }
+
+        $router['port'] = intval($_SERVER['SERVER_PORT']);
+
+        $router['path'] = preg_replace('/\/index\.php$/', '', $_SERVER['SCRIPT_NAME']);
+
+        $router['full']  = "";
+        $router['full'] .= $router['protocol'] . '://';
+        $router['full'] .= $router['host'];
+
+        if (!(!$router['ssl'] && $router['port'] == 80) && !($router['ssl'] && $router['port'] == 443)) {
+            $router['full'] .= ':' . $router['port'];
+        }
+
+        $router['full'] .= $router['path'];
+
+
+        return $router;
     }
 
 
