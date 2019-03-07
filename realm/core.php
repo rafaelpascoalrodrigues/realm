@@ -4,20 +4,30 @@ namespace Realm;
 class Core {
     protected $realm;
 
+    private $registry;
+
     protected $viewer;
 
     protected $classes_loaded;
     protected $time_start;
-    
+
+
+    public function __get($index) {
+        return (isset($this->registry[$index]) ? $this->registry[$index] : null);
+    }
+
 
     public function __construct($realm = "") {
         $this->time_start = microtime(false);
+
+        $this->registry = array();
 
         $this->realm = empty($realm) ? 'realm' : $realm;
 
         return true;
     }
 
+    
     public function InitializeViewer() {
         $this->viewer = new \Realm\Viewer();
     }
