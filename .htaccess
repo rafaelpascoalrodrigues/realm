@@ -1,0 +1,14 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine on
+
+    # If file is a javascript file
+    RewriteCond %{REQUEST_URI} !^.*\.js$
+    # If file is a CSS stylesheet
+    RewriteCond %{REQUEST_URI} !^.*\.css$
+    # If file is a LESS stylesheet
+    RewriteCond %{REQUEST_URI} !^.*\.less$
+    # If file is a PNG image
+    RewriteCond %{REQUEST_URI} !^.*\.png$
+
+    RewriteRule ^/?([^\?\ /]*)(?:/([^\?\ /]*))?(?:/([^\?\ /]*))?.*$ index.php?fullpath=$0&domain=$1&subdomain=$2&request=$3  [QSA,L]
+</IfModule>
