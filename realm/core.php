@@ -4,6 +4,8 @@ namespace Realm;
 class Core {
     protected $realm;
 
+    protected $viewer;
+
     protected $classes_loaded;
     protected $time_start;
     
@@ -14,6 +16,15 @@ class Core {
         $this->realm = empty($realm) ? 'realm' : $realm;
 
         return true;
+    }
+
+    public function InitializeViewer() {
+        $this->viewer = new \Realm\Viewer();
+    }
+
+
+    public function Show() {
+        $this->viewer->Show();
     }
 
 

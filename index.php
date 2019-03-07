@@ -33,5 +33,10 @@ spl_autoload_register(function($class) {
 /* Create the core object */
 $REALM = new \Realm\Core();
 
+/* Initialize modules */
+$REALM->InitializeViewer();
+
+/* Show requested domain and close */
+$REALM->Show();
 
 return true;
