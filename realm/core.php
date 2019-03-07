@@ -24,10 +24,19 @@ class Core {
 
         $this->realm = empty($realm) ? 'realm' : $realm;
 
+        
+        $this->registry['domain']    = !empty($_GET['domain'])    ? $_GET['domain']    : '' ;
+        $this->registry['subdomain'] = !empty($_GET['subdomain']) ? $_GET['subdomain'] : '' ;
+        $this->registry['request']   = !empty($_GET['request'])   ? $_GET['request']   : '' ;
+        $this->registry['fullpath']  = !empty($_GET['fullpath'])  ? $_GET['fullpath']  : '' ;
+  
+        $this->registry['query'] = empty($_GET) ? array() : $_GET;
+
+
         return true;
     }
 
-    
+
     public function InitializeViewer() {
         $this->viewer = new \Realm\Viewer();
     }
