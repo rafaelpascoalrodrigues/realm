@@ -15,16 +15,14 @@ class Core {
 
     public function __get($index) {
         $retval = null;
-        if (!array_key_exists($index, $this->__path)) {
-            $this->__path[$index] = array();
-        }
-
-        if (is_array($this->__path[$index])) {
-            $retval = $this;
-            $this->__path =& $this->__path[$index];
-        } else {
-            $retval = $this->__path[$index];
-            $this->__path =& $this->__data;
+        if (array_key_exists($index, $this->__path)) {
+            if (is_array($this->__path[$index])) {
+                $retval = $this;
+                $this->__path =& $this->__path[$index];
+            } else {
+                $retval = $this->__path[$index];
+                $this->__path =& $this->__data;
+            }
         }
 
         return $retval;
