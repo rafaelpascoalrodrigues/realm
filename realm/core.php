@@ -4,7 +4,8 @@ namespace Realm;
 class Core {
     protected $realm;
 
-    private $registry;
+    private $__data;
+    private $__path;
 
     protected $viewer;
 
@@ -13,26 +14,47 @@ class Core {
 
 
     public function __get($index) {
-        return (isset($this->registry[$index]) ? $this->registry[$index] : null);
+        $retval = null;
+        if (!array_key_exists($index, $this->__path)) {
+            $this->__path[$index] = array();
+        }
+
+        if (is_array($this->__path[$index])) {
+            $retval = $this;
+            $this->__path =& $this->__path[$index];
+        } else {
+            $retval = $this->__path[$index];
+            $this->__path =& $this->__data;
+        }
+
+        return $retval;
+    }
+
+    public function __set($index, $value) {
+        $this->__path[$index] = $value;
+        $this->__path =& $this->__data;
+
+        return true;
     }
 
 
     public function __construct($realm = "") {
         $this->time_start = microtime(false);
 
-        $this->registry = array();
+        $this->__data = array();
+        $this->__path =& $this->__data;
 
         $this->realm = empty($realm) ? 'realm' : $realm;
+        
 
+        $this->domain    = !empty($_GET['domain'])    ? $_GET['domain']    : '' ;
+        $this->subdomain = !empty($_GET['subdomain']) ? $_GET['subdomain'] : '' ;
+        $this->request   = !empty($_GET['request'])   ? $_GET['request']   : '' ;
+        $this->fullpath  = !empty($_GET['fullpath'])  ? $_GET['fullpath']  : '' ;
 
-        $this->registry['domain']    = !empty($_GET['domain'])    ? $_GET['domain']    : '' ;
-        $this->registry['subdomain'] = !empty($_GET['subdomain']) ? $_GET['subdomain'] : '' ;
-        $this->registry['request']   = !empty($_GET['request'])   ? $_GET['request']   : '' ;
-        $this->registry['fullpath']  = !empty($_GET['fullpath'])  ? $_GET['fullpath']  : '' ;
-  
-        $this->registry['query'] = empty($_GET) ? array() : $_GET;
+        $this->query = empty($_GET) ? array() : $_GET;
 
-        $this->registry['uri'] = self::GetUri();
+        $this->uri = self::GetUri();
 
         return true;
     }
