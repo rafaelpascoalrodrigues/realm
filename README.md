@@ -23,6 +23,8 @@ When a domain, subdomain, or request is called, a file `.php` and a file .`html`
 
 If the call is invalid, a ***default*** file will be search to be used instead show a *Not Found* return.
 
+A `$this->realm->redirect` variable can be set on the `.php` file to redirect a call to another domain/subdomain/request.
+
 The Domain may have a ***class*** folder where classes can be created and autoloaded on demand. The class `nameserver` must be the Domain name.
 
 Structure Sample:

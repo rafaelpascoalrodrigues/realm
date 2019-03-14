@@ -21,12 +21,17 @@ class Viewer {
             include $this->realm->router->code->path;
         }
 
-        if ($this->realm->router->template->exists) {
-            include $this->realm->router->template->path;
-        }
+        if ($this->realm->redirect != "") {
+            $redirect = preg_replace('/(?<!http:)\/{2,}/', '/', $this->realm->uri->full . '/' . $this->realm->redirect);
+            header("Location: " . $redirect, true, 307);
+        } else {
+            if ($this->realm->router->template->exists) {
+                include $this->realm->router->template->path;
+            }
 
-        if (!$this->realm->router->code->exists && !$this->realm->router->template->exists) {
-            self::DefaultNotFound();
+            if (!$this->realm->router->code->exists && !$this->realm->router->template->exists) {
+                self::DefaultNotFound();
+            }
         }
 
         return;
