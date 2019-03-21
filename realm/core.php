@@ -81,6 +81,8 @@ class Core {
 
         $router['path'] = preg_replace('/\/index\.php$/', '', $_SERVER['SCRIPT_NAME']);
 
+        $router['local'] = dirname($_SERVER['SCRIPT_FILENAME']);
+
         $router['full']  = "";
         $router['full'] .= $router['protocol'] . '://';
         $router['full'] .= $router['host'];
