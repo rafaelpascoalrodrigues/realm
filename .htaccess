@@ -9,6 +9,9 @@
     RewriteCond %{REQUEST_URI} !^.*\.less$
     # If file is a PNG image
     RewriteCond %{REQUEST_URI} !^.*\.png$
+    # If file is a font
+    RewriteCond %{REQUEST_URI} !^.*\.((ttf)|(eot)|(woff)|(woff2))$
+
 
     RewriteRule ^/?([^\?\ /]*)(?:/([^\?\ /]*))?(?:/([^\?\ /]*))?.*$ index.php?fullpath=$0&domain=$1&subdomain=$2&request=$3  [QSA,L]
 </IfModule>
