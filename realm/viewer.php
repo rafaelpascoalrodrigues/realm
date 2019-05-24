@@ -24,6 +24,18 @@ class Viewer {
         if ($this->realm->redirect != "") {
             $redirect = preg_replace('/(?<!http:)\/{2,}/', '/', $this->realm->uri->full . '/' . $this->realm->redirect);
             header("Location: " . $redirect, true, 307);
+        } else if (isset($realm_viewer) && $realm_viewer != "") {
+            $this->realm->viewer = $realm_viewer;
+
+            $this->realm->router->viewer = self::FindDomainFiles($this->realm->viewer, 'template', '');
+
+            if ($this->realm->router->viewer->code->exists) {
+                include $this->realm->router->viewer->code->path;
+            }
+    
+            if ($this->realm->router->viewer->template->exists) {
+                include $this->realm->router->viewer->template->path;
+            }
         } else {
             if ($this->realm->router->template->exists) {
                 include $this->realm->router->template->path;
