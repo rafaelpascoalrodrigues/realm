@@ -50,15 +50,29 @@ class Viewer {
     }
 
     private static function FindDomainFiles($domain, $subdomain, $request) {
-        $files = array();
+        return self::FindFiles($domain, $subdomain, $request, 'default');
+    }
+
+
+    public static function FindFiles($domain, $subdomain, $file, $default = '') {
+        $files = array(
+            'code' => array(
+                'path' => '',
+                'exists' => false,
+            ),
+            'template' => array(
+                'path' => '',
+                'exists' => false,
+            )
+        );
 
         $path = DOMAINS;
         if ($domain != "") {
             $path .= DIRECTORY_SEPARATOR . $domain;
             if ($subdomain != "") {
                 $path .= DIRECTORY_SEPARATOR . $subdomain;
-                if ($request != "") {
-                    $path .= DIRECTORY_SEPARATOR . $request;
+                if ($file != "") {
+                    $path .= DIRECTORY_SEPARATOR . $file;
                 }
             }
         }
@@ -79,22 +93,28 @@ class Viewer {
 
             return $files;
         } else {
-            if ($request != "") {
-                $path = substr($path, 0, strrpos($path, DIRECTORY_SEPARATOR));
+            if ($default != "") {
+                $path = DOMAINS;
+                if ($domain != "") {
+                    $path .= DIRECTORY_SEPARATOR . $domain;
+                    if ($subdomain != "") {
+                        $path .= DIRECTORY_SEPARATOR . $subdomain;
+                    }
+                }
             }
 
             for ($lifespan = 10; $lifespan > 0; $lifespan--) {
-                $code_exists = file_exists($path . DIRECTORY_SEPARATOR . 'default.php');
-                $template_exists = file_exists($path . DIRECTORY_SEPARATOR . 'default.html');
+                $code_exists = file_exists($path . DIRECTORY_SEPARATOR . $default . '.php');
+                $template_exists = file_exists($path . DIRECTORY_SEPARATOR . $default . '.html');
                 if ($code_exists || $template_exists) {
                     $files['code'] = array(
-                        'path' => $path . DIRECTORY_SEPARATOR . 'default.php',
-                        'exists' => file_exists($path . DIRECTORY_SEPARATOR . 'default.php'),
+                        'path' => $path . DIRECTORY_SEPARATOR . $default . '.php',
+                        'exists' => file_exists($path . DIRECTORY_SEPARATOR . $default . '.php'),
                     );
 
                     $files['template'] = array(
-                        'path' => $path . DIRECTORY_SEPARATOR . 'default.html',
-                        'exists' => file_exists($path . DIRECTORY_SEPARATOR . 'default.html'),
+                        'path' => $path . DIRECTORY_SEPARATOR . $default . '.html',
+                        'exists' => file_exists($path . DIRECTORY_SEPARATOR . $default . '.html'),
                     );
 
                     return $files;
