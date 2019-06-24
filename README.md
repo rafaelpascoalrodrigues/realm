@@ -19,6 +19,46 @@ Include Files, as images and scripts, that will be ignored in that rule:
 Configuration files can be stored on folder _**settings/**_ in `json` format.
 
 
+## Database
+
+```php
+# Open a connection with a database
+$statement = new \Realm\DatabaseStatement('database_name');
+
+# Prepare a query
+$statement->Prepare('' .
+    'SELECT ' .
+        '`a`.`field` AS `result` ' .
+    'FROM ' .
+        '`:table`' .
+    'WHERE ' .
+        '`a`.`numeric` = :number AND ' .
+        '`a`.`text`    = :string ' .
+';');
+
+# Adjust the query with non field value
+$statement->BindConstant('table', 'my_table');
+
+# Bind values on the statement
+$statement->BindValue('number', 1,      \PDO::PARAM_INT);
+$statement->BindValue('string', 'test', \PDO::PARAM_STR);
+
+# Bind a variable to receive a return value on a statement
+$statement->BindResult('resuly', $result, \PDO::PARAM_STR);
+
+# Execute the query
+$result = $statement->Execute();
+if (!$result) {
+    echo $statement->ErrorInfo();
+}
+
+# Run through rows
+while ($result && $statement->Fetch()) {
+    echo "Result: {$result}.\n";  
+}
+```
+
+
 ## Domains
 
 The _Domains_ is the area to develop the enviroment. The folder structure can have 3 levels: domain, subdomain and request. Domain and Subdomain levels can be a folder used to contain the lower levels.

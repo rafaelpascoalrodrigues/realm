@@ -36,6 +36,7 @@ $REALM = new \Realm\Core();
 
 /* Initialize modules */
 $REALM->InitializeViewer();
+$REALM->InitializeDatabaseConnection();
 
 /* Show requested domain and close */
 $REALM->Show();

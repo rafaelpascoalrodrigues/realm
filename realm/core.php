@@ -8,6 +8,7 @@ class Core {
     private $__path;
 
     protected $viewer;
+    protected $database;
 
     protected $classes_loaded;
     protected $time_start;
@@ -95,6 +96,15 @@ class Core {
 
 
         return $router;
+    }
+
+
+    public function InitializeDatabaseConnection() {
+        $this->database = new \Realm\Database();
+    }
+
+    public function getDatabase() {
+        return $this->database;
     }
 
 
