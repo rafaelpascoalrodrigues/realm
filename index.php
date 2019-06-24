@@ -1,8 +1,9 @@
 <?php
 /* Set directory structure */
-define('CORE',    'realm');
-define('CLASSES', 'classes');
-define('DOMAINS', 'domains');
+define('CORE',     'realm');
+define('CLASSES',  'classes');
+define('DOMAINS',  'domains');
+define('SETTINGS', 'settings');
 
 
 /* Initialize classes autoload function */

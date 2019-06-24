@@ -1,2 +1,5 @@
 # Ignore individual modules configuration
 .gitmodules
+
+# Ignore configuration files
+settings/

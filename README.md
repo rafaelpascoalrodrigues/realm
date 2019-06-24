@@ -15,6 +15,10 @@ Include Files, as images and scripts, that will be ignored in that rule:
 - images: `png`
 
 
+## Configuration
+Configuration files can be stored on folder _**settings/**_ in `json` format.
+
+
 ## Domains
 
 The _Domains_ is the area to develop the enviroment. The folder structure can have 3 levels: domain, subdomain and request. Domain and Subdomain levels can be a folder used to contain the lower levels.
